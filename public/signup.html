@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><title>Sign Up</title></head>
+<body style="text-align:center; font-family:sans-serif; padding-top:40px;">
+<h2>Sign Up with Gmail</h2>
+<input id="name" type="text" placeholder="Apna Naam" style="padding:10px; width:260px;"><br><br>
+<input id="email" type="email" placeholder="Apna Gmail" style="padding:10px; width:260px;"><br><br>
+<input id="birthday" type="date" style="padding:10px; width:260px;"><br><br>
+<input id="password" type="password" placeholder="Password Banayen" style="padding:10px; width:260px;"><br><br>
+<button onclick="signup()" style="padding:10px 40px;">Sign Up</button>
+<p id="msg"></p>
+<script>
+async function signup(){
+  let name = document.getElementById('name').value;
+  let email = document.getElementById('email').value;
+  let birthday = document.getElementById('birthday').value;
+  let password = document.getElementById('password').value;
+  if(!name || !email || !birthday || !password){
+    document.getElementById('msg').innerText = 'Sab khanay bharen, Birthday bhi lazmi hai';
+    return;
+  }
+  let res = await fetch('/api/signup', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({name, email, birthday, password})
+  });
+  let data = await res.json();
+  document.getElementById('msg').innerText = data.message;
+  if(data.success){
+    setTimeout(()=>{ window.location.href = '/'; }, 1000);
+  }
+}
+</script>
+</body>
+</html>
